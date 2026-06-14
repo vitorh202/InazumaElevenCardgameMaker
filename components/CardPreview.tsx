@@ -1,0 +1,195 @@
+// components/CardPreview.tsx
+import React from 'react';
+
+export default function CardPreview({ data }: { data: any }) {
+  const stars = data.rarity === 'comum' ? 1 : data.rarity === 'elite' ? 2 : data.rarity === 'lendario' ? 3 : 4;
+
+  // Mapeamento dos layouts dinâmicos por posição
+  const layoutMaps: Record<string, string> = {
+    atacante: '/assets/layouts/atacante.png',
+    defensor: '/assets/layouts/defensor.png',
+    goleiro: '/assets/layouts/goleiro.png',
+    meio: '/assets/layouts/meio.png',
+  };
+
+  const currentLayout = layoutMaps[data.position?.toLowerCase()] || layoutMaps['goleiro'];
+
+  const renderEffectText = (text: string) => {
+    if (!text) return null;
+    const parts = text.split(/(\{.*?\})/g);
+    
+    return parts.map((part, index) => {
+      if (part === '{R}') return <img key={index} src="/assets/icons/shield.png" alt="Res" className="inline-block w-[40px] h-[40px] mx-0.5 align-middle object-contain" onError={(e) => e.currentTarget.style.display = 'none'} />;
+      if (part === '{A}') return <img key={index} src="/assets/icons/atk.png" alt="Atk" className="inline-block w-[40px] h-[40px] mx-0.5 align-middle object-contain" onError={(e) => e.currentTarget.style.display = 'none'} />;
+      if (part === '{RAIMON}') return <img key={index} src="/assets/teams/raimon.webp" alt="Raimon" className="inline-block w-[40px] h-[40px] mx-0.5 align-middle object-contain" onError={(e) => e.currentTarget.style.display = 'none'} />;
+
+      if (!part.startsWith('{')) {
+        const words = part.split(' ');
+        return (
+          <React.Fragment key={index}>
+            {words.map((word, wIndex) => {
+              const cleanWord = word.replace(/[.,]/g, '');
+              if (cleanWord.toLowerCase() === 'hissatsu') {
+                return <span key={`${index}-${wIndex}`} className="text-blue-700 font-black">{word} </span>;
+              }
+              return word + ' ';
+            })}
+          </React.Fragment>
+        );
+      }
+      return part;
+    });
+  };
+
+  return (
+    <div className="w-full flex justify-center items-start overflow-visible">
+      
+      {/* Injeção local das fontes customizadas */}
+      <style>{`
+        @font-face {
+          font-family: 'Balmont';
+          src: url('/assets/fonts/Balmont.ttf') format('truetype');
+          font-weight: normal;
+          font-style: normal;
+        }
+        @font-face {
+          font-family: 'Stormfaze';
+          src: url('/assets/fonts/Stormfaze.otf') format('truetype');
+          font-weight: normal;
+          font-style: normal;
+        }
+        .font-balmont { font-family: 'Balmont', sans-serif; }
+        .font-stormfaze { font-family: 'Stormfaze', sans-serif; }
+
+        /* Escalonamento via zoom mantém as proporções reais intocadas no Canvas */
+        .card-container-scaler {
+          zoom: 0.45;
+        }
+        @media (min-width: 640px) { .card-container-scaler { zoom: 0.5; } }
+        @media (min-width: 768px) { .card-container-scaler { zoom: 0.6; } }
+        @media (min-width: 1024px) { .card-container-scaler { zoom: 0.7; } }
+      `}</style>
+
+      {/* Wrapper com o controle de escala visual limpo */}
+      <div className="card-container-scaler shrink-0 select-none">
+        
+        {/* CONTAINER DA CARTA TRAVADO EM 750x1050 */}
+        <div 
+          id="card-canvas"
+          style={{ width: '750px', height: '1050px' }}
+          className="relative bg-black overflow-hidden shrink-0 shadow-2xl"
+        >
+        
+        {/* =========================================================
+            CAMADA 1: Arte do Personagem (Fundo)
+          ========================================================= */}
+        <div className="absolute inset-0 z-0 bg-neutral-900 overflow-hidden">
+          {data.artUrl ? (
+            <img 
+              src={data.artUrl} 
+              alt="Arte" 
+              style={{
+                objectFit: (data.artFit as any) || 'cover',
+                objectPosition: `${data.artPositionX ?? 50}% ${data.artPositionY ?? 50}%`,
+                transform: `scale(${data.artScale ?? 1})`,
+              }}
+              className="w-full h-full block" 
+            />
+          ) : (
+            <div className="w-full h-full flex items-center justify-center text-gray-500 text-[40px] font-bold font-stormfaze">
+              Insira uma Arte
+            </div>
+          )}
+        </div>
+
+        {/* =========================================================
+            CAMADA 2: Layout / Template da Posição (Meio)
+           ========================================================= */}
+        <div className="absolute inset-0 z-10 pointer-events-none">
+          <img src={currentLayout} alt="Template Layout" className="w-full h-full object-fill" />
+        </div>
+
+        {/* =========================================================
+            CAMADA 3: Textos e Ícones Dinâmicos (Topo)
+           ========================================================= */}
+        
+        {/* Custo (Fica centralizado perfeitamente sobre a bola/círculo do topo esquerdo) */}
+        <div className="absolute top-[15px] left-[15px] w-[105px] h-[105px] flex items-center justify-center z-20">
+          <span className="font-stormfaze text-[60px] text-black leading-none select-none">
+            {data.cost || '0'}
+          </span>
+        </div>
+
+        {/* Raridade (Estrelas abaixo do custo) */}
+        <div className="absolute top-[130px] left-[45px] flex flex-col gap-2 z-20">
+          {Array.from({ length: stars }).map((_, i) => (
+            <img 
+              key={i} 
+              src="/assets/icons/star.png" 
+              className="w-[55px] h-[55px] drop-shadow-[0_4px_4px_rgba(0,0,0,0.6)] object-contain" 
+              alt="Star" 
+              onError={(e) => e.currentTarget.style.display = 'none'} 
+            />
+          ))}
+        </div>
+
+        {/* Elemento  (Flutuando no topo direito) */}
+        <div className="absolute top-[32px] right-[32px] w-[105px] h-[105px] z-20 flex items-center justify-center">
+          <img 
+            src={`/assets/elements/${data.element || 'montanha'}.png`} 
+            alt="Elemento" 
+            className="w-[85px] h-[85px] object-contain drop-shadow-[0_5px_5px_rgba(0,0,0,0.6)]" 
+            onError={(e) => e.currentTarget.style.display = 'none'} 
+          />
+        </div>
+
+        {/* Caixa de Efeito (Ajustada com a fonte Balmont e opacidade 80%) */}
+        <div className="absolute bottom-[245px] left-[50px] right-[50px] bg-white/80 backdrop-blur-[2px] rounded-[25px] px-[35px] py-[25px] z-20 shadow-md min-h-[140px] flex items-center">
+          <div className="font-balmont text-black text-[32px] leading-snug whitespace-pre-wrap w-full">
+            {renderEffectText(data.effect)}
+          </div>
+        </div>
+
+        {/* Nome da Posição (Centralizado no trapézio do meio da tarja) */}
+        <div className="absolute bottom-[160px] left-0 right-0 flex justify-center z-20">
+          <span className="font-stormfaze text-black text-[38px] tracking-wide uppercase">
+            {data.position || 'Goleiro'}
+          </span>
+        </div>
+
+        {/* Valor de Ataque (Centralizado perfeitamente sobre a rede do rodapé esquerdo) */}
+        <div className="absolute bottom-[2px] left-[15px] w-[95px] h-[95px] flex items-center justify-center z-20">
+          <span className="font-stormfaze text-[55px] text-black leading-none">
+            {data.atk || '—'}
+          </span>
+        </div>
+
+        {/* Nome do Jogador & Ícone do Time (Centro do rodapé) */}
+        <div className="absolute bottom-[15px] left-[150px] right-[150px] h-[140px] flex flex-col items-center justify-center z-20">
+          {/* Nome com fonte Balmont (Deslocado 5px para baixo) */}
+          <span className="font-balmont text-[52px] text-black tracking-wide text-center uppercase whitespace-nowrap mb-1 translate-y-[10px]">
+            {data.name || 'NOME'}
+          </span>
+          {/* Ícone do Time miniaturizado (Com sombra projetada de 5px) */}
+          <div className="w-[75px] h-[75px]">
+            <img 
+              src={`/assets/teams/${data.team || 'raimon'}.webp`} 
+              alt="Time" 
+              className="w-full h-full object-contain drop-shadow-[0_5px_5px_rgba(0,0,0,0.8)] translate-y-[-7px]" 
+              onError={(e) => e.currentTarget.style.display = 'none'} 
+            />
+          </div>
+        </div>
+
+        {/* Valor de Resistência (Centralizado perfeitamente sobre o escudo do rodapé direito) */}
+        <div className="absolute bottom-[2px] right-[6px] w-[95px] h-[95px] flex items-center justify-center z-20">
+          <span className="font-stormfaze text-[55px] text-black leading-none">
+            {data.res || '0'}
+          </span>
+        </div>
+
+      </div>
+    </div>
+    </div>
+  );
+}
