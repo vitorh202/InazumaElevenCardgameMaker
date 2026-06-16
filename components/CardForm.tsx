@@ -44,8 +44,9 @@ export default function CardForm({ cardData, setCardData }: { cardData: any, set
           <select name="element" value={cardData.element} onChange={handleChange} className="w-full p-2 rounded bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-yellow-500">
             <option value="fogo">Fogo</option>
             <option value="vento">Vento</option>
-            <option value="madeira">Madeira</option>
+            <option value="natureza">Natureza</option>
             <option value="montanha">Montanha</option>
+            <option value="nulo">Nulo</option>
           </select>
         </div>
 

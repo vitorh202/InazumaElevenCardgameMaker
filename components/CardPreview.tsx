@@ -12,6 +12,20 @@ export default function CardPreview({ data }: { data: any }) {
     meio: '/assets/layouts/meio.png',
   };
 
+  const EFFECT_KEYWORDS = [
+    'Disparo Direto', 'Golpe Final', 'Impulso X', 'Combinação', 'Interceptação',
+    'Assinatura', 'Atordoado', 'Afinidade', 'Condição', 'Perfurante', 'Despertar',
+    'Investida', 'Hissatsu', 'Técnica', 'Suporte', 'Estagio', 'Jogador', 'Exausto',
+    'Bloqueio', 'Defesa', 'Cadeia', 'Chutes', 'Roubar', 'Mover', 'Posse'
+  ];
+  
+  // Ordenamos da palavra mais longa para a mais curta. 
+  // Isso evita bugs (ex: o sistema tentar pintar "Disparo" e ignorar o "Direto" logo depois).
+  const SORTED_KEYWORDS = [...EFFECT_KEYWORDS].sort((a, b) => b.length - a.length);
+  
+  // Cria o separador. O "gi" significa Global e Case-Insensitive (ignora maiúsculas/minúsculas)
+  const KEYWORD_REGEX = new RegExp(`(${SORTED_KEYWORDS.join('|')})`, 'gi');
+
   const currentLayout = layoutMaps[data.position?.toLowerCase()] || layoutMaps['goleiro'];
 
   const renderEffectText = (text: string) => {
@@ -19,20 +33,32 @@ export default function CardPreview({ data }: { data: any }) {
     const parts = text.split(/(\{.*?\})/g);
     
     return parts.map((part, index) => {
-      if (part === '{R}') return <img key={index} src="/assets/icons/shield.png" alt="Res" className="inline-block w-[40px] h-[40px] mx-0.5 align-middle object-contain" onError={(e) => e.currentTarget.style.display = 'none'} />;
-      if (part === '{A}') return <img key={index} src="/assets/icons/atk.png" alt="Atk" className="inline-block w-[40px] h-[40px] mx-0.5 align-middle object-contain" onError={(e) => e.currentTarget.style.display = 'none'} />;
-      if (part === '{RAIMON}') return <img key={index} src="/assets/teams/raimon.webp" alt="Raimon" className="inline-block w-[40px] h-[40px] mx-0.5 align-middle object-contain" onError={(e) => e.currentTarget.style.display = 'none'} />;
+      if (part.toLowerCase() === '{r}') return <img key={index} src="/assets/icons/shield.png" alt="Res" className="inline-block w-[40px] h-[40px] mx-0.5 align-middle object-contain" onError={(e) => e.currentTarget.style.display = 'none'} />;
+      if (part.toLowerCase() === '{a}') return <img key={index} src="/assets/icons/atk.png" alt="Atk" className="inline-block w-[40px] h-[40px] mx-0.5 align-middle object-contain" onError={(e) => e.currentTarget.style.display = 'none'} />;
+      if (part.toLowerCase() === '{raimon}') return <img key={index} src="/assets/teams/raimon.webp" alt="Raimon" className="inline-block w-[40px] h-[40px] mx-0.5 align-middle object-contain" onError={(e) => e.currentTarget.style.display = 'none'} />;
 
       if (!part.startsWith('{')) {
-        const words = part.split(' ');
+        // Ao invés de quebrar por espaço, quebramos pelas nossas palavras-chave.
+        const fragments = part.split(KEYWORD_REGEX);
+        
         return (
           <React.Fragment key={index}>
-            {words.map((word, wIndex) => {
-              const cleanWord = word.replace(/[.,]/g, '');
-              if (cleanWord.toLowerCase() === 'hissatsu') {
-                return <span key={`${index}-${wIndex}`} className="text-blue-700 font-black">{word} </span>;
+            {fragments.map((fragment, fIndex) => {
+              // Verifica se o pedaço atual é uma das palavras do nosso array
+              const isKeyword = SORTED_KEYWORDS.some(
+                (kw) => kw.toLowerCase() === fragment.toLowerCase()
+              );
+
+              if (isKeyword) {
+                return (
+                  <span key={`${index}-${fIndex}`} className="text-blue-700 font-black">
+                    {fragment}
+                  </span>
+                );
               }
-              return word + ' ';
+              
+              // Se não for palavra-chave (se for pontuação, texto comum ou espaço), retorna normal
+              return fragment;
             })}
           </React.Fragment>
         );
@@ -40,6 +66,7 @@ export default function CardPreview({ data }: { data: any }) {
       return part;
     });
   };
+
 
   return (
     <div className="w-full flex justify-center items-start overflow-visible">
