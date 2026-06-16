@@ -20,6 +20,8 @@ export default function Home() {
     artScale: 1,        // Controla o zoom
     artPositionX: 50,   // Posição horizontal (%)
     artPositionY: 50,   // Posição vertical (%)
+    cardType: 'jogador', // 'jogador' | 'hissatsu' | 'evento' | 'suporte' | 'tatica'
+    skillType: 'agarrar', // 'agarrar' | 'defender' | 'drible' | 'chute' (Usado apenas para Hissatsu)
   });
 
   const cardRef = useRef<HTMLDivElement>(null);

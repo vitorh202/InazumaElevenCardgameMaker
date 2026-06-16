@@ -5,12 +5,14 @@ export default function CardPreview({ data }: { data: any }) {
   const stars = data.rarity === 'comum' ? 1 : data.rarity === 'elite' ? 2 : data.rarity === 'lendario' ? 3 : 4;
 
   // Mapeamento dos layouts dinâmicos por posição
-  const layoutMaps: Record<string, string> = {
-    atacante: '/assets/layouts/atacante.png',
-    defensor: '/assets/layouts/defensor.png',
-    goleiro: '/assets/layouts/goleiro.png',
-    meio: '/assets/layouts/meio.png',
-  };
+  let layoutFileName = '';
+  if (data.cardType === 'jogador' || data.cardType === 'hissatsu') {
+    layoutFileName = `${data.element || 'montanha'}-${data.cardType}`;
+  } else {
+    // Para evento, suporte e tática, o nome do arquivo é o próprio tipo
+    layoutFileName = data.cardType;
+  }
+  const currentLayout = `/assets/layouts/${layoutFileName}.png`;
 
   const EFFECT_KEYWORDS = [
     'Disparo Direto', 'Golpe Final', 'Impulso X', 'Combinação', 'Interceptação',
@@ -26,7 +28,7 @@ export default function CardPreview({ data }: { data: any }) {
   // Cria o separador. O "gi" significa Global e Case-Insensitive (ignora maiúsculas/minúsculas)
   const KEYWORD_REGEX = new RegExp(`(${SORTED_KEYWORDS.join('|')})`, 'gi');
 
-  const currentLayout = layoutMaps[data.position?.toLowerCase()] || layoutMaps['goleiro'];
+ // const currentLayout = layoutMaps[data.position?.toLowerCase()] || layoutMaps['goleiro'];
 
   const renderEffectText = (text: string) => {
     if (!text) return null;
@@ -133,8 +135,12 @@ export default function CardPreview({ data }: { data: any }) {
             CAMADA 2: Layout / Template da Posição (Meio)
            ========================================================= */}
         <div className="absolute inset-0 z-10 pointer-events-none">
-          <img src={currentLayout} alt="Template Layout" className="w-full h-full object-fill" />
-        </div>
+        <img 
+          src={currentLayout} 
+          alt="Template Layout" 
+          className="w-full h-full object-fill absolute inset-0" 
+        />
+      </div>
 
         {/* =========================================================
             CAMADA 3: Textos e Ícones Dinâmicos (Topo)
@@ -148,6 +154,7 @@ export default function CardPreview({ data }: { data: any }) {
         </div>
 
         {/* Raridade (Estrelas abaixo do custo) */}
+        {data.cardType === 'jogador' && (
         <div className="absolute top-[130px] left-[45px] flex flex-col gap-2 z-20">
           {Array.from({ length: stars }).map((_, i) => (
             <img 
@@ -159,8 +166,10 @@ export default function CardPreview({ data }: { data: any }) {
             />
           ))}
         </div>
+        )}
 
-        {/* Elemento  (Flutuando no topo direito) */}
+                    {/* Elemento  (Flutuando no topo direito) */}
+        {(data.cardType === 'jogador' || data.cardType === 'hissatsu') && (
         <div className="absolute top-[32px] right-[32px] w-[105px] h-[105px] z-20 flex items-center justify-center">
           <img 
             src={`/assets/elements/${data.element || 'montanha'}.png`} 
@@ -169,6 +178,7 @@ export default function CardPreview({ data }: { data: any }) {
             onError={(e) => e.currentTarget.style.display = 'none'} 
           />
         </div>
+        )}
 
         {/* Caixa de Efeito (Ajustada com a fonte Balmont e opacidade 80%) */}
         <div className="absolute bottom-[245px] left-[50px] right-[50px] bg-white/80 backdrop-blur-[2px] rounded-[25px] px-[35px] py-[25px] z-20 shadow-md min-h-[140px] flex items-center">
@@ -177,19 +187,26 @@ export default function CardPreview({ data }: { data: any }) {
           </div>
         </div>
 
-        {/* Nome da Posição (Centralizado no trapézio do meio da tarja) */}
-        <div className="absolute bottom-[160px] left-0 right-0 flex justify-center z-20">
-          <span className="font-stormfaze text-black text-[38px] tracking-wide uppercase">
-            {data.position || 'Goleiro'}
-          </span>
-        </div>
+        {/* Nome da Posição (se Jogador) ou Tipo da Carta */}
+          <div className="absolute bottom-[160px] left-0 right-0 flex justify-center z-20">
+            <span className="font-stormfaze text-[38px] tracking-wide uppercase" style={{ color: '#000000' }}>
+              {data.cardType === 'jogador' 
+                ? (data.position || 'Goleiro') 
+                : data.cardType === 'tatica' 
+                  ? 'Tática' 
+                  : data.cardType}
+            </span>
+          </div>
 
+        
         {/* Valor de Ataque (Centralizado perfeitamente sobre a rede do rodapé esquerdo) */}
+        {data.cardType === 'jogador' && (
         <div className="absolute bottom-[2px] left-[15px] w-[95px] h-[95px] flex items-center justify-center z-20">
           <span className="font-stormfaze text-[55px] text-black leading-none">
             {data.atk || '—'}
           </span>
         </div>
+        )}
 
         {/* Nome do Jogador & Ícone do Time (Centro do rodapé) */}
         <div className="absolute bottom-[15px] left-[150px] right-[150px] h-[140px] flex flex-col items-center justify-center z-20">
@@ -198,22 +215,35 @@ export default function CardPreview({ data }: { data: any }) {
             {data.name || 'NOME'}
           </span>
           {/* Ícone do Time miniaturizado (Com sombra projetada de 5px) */}
+          
           <div className="w-[75px] h-[75px]">
+          {data.cardType === 'jogador' && (
             <img 
               src={`/assets/teams/${data.team || 'raimon'}.webp`} 
               alt="Time" 
               className="w-full h-full object-contain drop-shadow-[0_5px_5px_rgba(0,0,0,0.8)] translate-y-[-7px]" 
               onError={(e) => e.currentTarget.style.display = 'none'} 
             />
+          )}
+          {/* RENDERIZA TIPO DE HABILIDADE SE FOR HISSATSU */}
+          {data.cardType === 'hissatsu' && (
+            <img 
+              src={`/assets/skills/${data.skillType || 'chute'}.png`} 
+              alt="Habilidade" 
+              className="w-full h-full object-contain drop-shadow-[0_5px_5px_rgba(0,0,0,0.6)]" 
+            />
+          )}
           </div>
         </div>
 
         {/* Valor de Resistência (Centralizado perfeitamente sobre o escudo do rodapé direito) */}
+        {data.cardType === 'jogador' && (
         <div className="absolute bottom-[2px] right-[6px] w-[95px] h-[95px] flex items-center justify-center z-20">
           <span className="font-stormfaze text-[55px] text-black leading-none">
             {data.res || '0'}
           </span>
         </div>
+        )}
 
       </div>
     </div>
