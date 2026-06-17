@@ -18,7 +18,7 @@ export default function CardPreview({ data }: { data: any }) {
     'Disparo Direto', 'Golpe Final', 'Impulso X', 'Combinação', 'Interceptação',
     'Assinatura', 'Atordoado', 'Afinidade', 'Condição', 'Perfurante', 'Despertar',
     'Investida', 'Hissatsu', 'Técnica', 'Suporte', 'Estagio', 'Jogador', 'Exausto',
-    'Bloqueio', 'Defesa', 'Cadeia', 'Chutes', 'Roubar', 'Mover', 'Posse', 'jogadores',
+    'Bloqueio', 'Defesa', 'Cadeia', 'Chutes', 'Roubar', 'Mover', 'Posse', 'Jogadores',
     'Descarte'
   ];
   
