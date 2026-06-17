@@ -18,7 +18,8 @@ export default function CardPreview({ data }: { data: any }) {
     'Disparo Direto', 'Golpe Final', 'Impulso X', 'Combinação', 'Interceptação',
     'Assinatura', 'Atordoado', 'Afinidade', 'Condição', 'Perfurante', 'Despertar',
     'Investida', 'Hissatsu', 'Técnica', 'Suporte', 'Estagio', 'Jogador', 'Exausto',
-    'Bloqueio', 'Defesa', 'Cadeia', 'Chutes', 'Roubar', 'Mover', 'Posse'
+    'Bloqueio', 'Defesa', 'Cadeia', 'Chutes', 'Roubar', 'Mover', 'Posse', 'jogadores',
+    'Descarte'
   ];
   
   // Ordenamos da palavra mais longa para a mais curta. 
