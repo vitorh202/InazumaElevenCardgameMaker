@@ -15,7 +15,7 @@ export default function CardPreview({ data }: { data: any }) {
   const currentLayout = `/assets/layouts/${layoutFileName}.png`;
 
   const EFFECT_KEYWORDS = [
-    'Disparo Direto', 'Golpe Final', 'Impulso X', 'Combinação', 'Interceptação',
+    'Disparo Direto', 'Golpe Final', 'Impulso', 'Combinação', 'Interceptação',
     'Assinatura', 'Atordoado', 'Afinidade', 'Condição', 'Perfurante', 'Despertar',
     'Investida', 'Hissatsu', 'Técnica', 'Suporte', 'Estagio', 'Jogador', 'Exausto',
     'Bloqueio', 'Defesa', 'Cadeia', 'Chutes', 'Roubar', 'Mover', 'Posse', 'Jogadores',
