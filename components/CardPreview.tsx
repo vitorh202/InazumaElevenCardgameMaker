@@ -38,6 +38,14 @@ export default function CardPreview({ data }: { data: any }) {
       if (part.toLowerCase() === '{r}') return <img key={index} src="/assets/icons/shield.png" alt="Res" className="inline-block w-[40px] h-[40px] mx-0.5 align-middle object-contain" onError={(e) => e.currentTarget.style.display = 'none'} />;
       if (part.toLowerCase() === '{a}') return <img key={index} src="/assets/icons/atk.png" alt="Atk" className="inline-block w-[40px] h-[40px] mx-0.5 align-middle object-contain" onError={(e) => e.currentTarget.style.display = 'none'} />;
       if (part.toLowerCase() === '{raimon}') return <img key={index} src="/assets/teams/raimon.webp" alt="Raimon" className="inline-block w-[40px] h-[40px] mx-0.5 align-middle object-contain" onError={(e) => e.currentTarget.style.display = 'none'} />;
+      if (part.toLowerCase() === '{genesis}') return <img key={index} src="/assets/teams/genesis.webp" alt="Raimon" className="inline-block w-[40px] h-[40px] mx-0.5 align-middle object-contain" onError={(e) => e.currentTarget.style.display = 'none'} />;
+      if (part.toLowerCase() === '{royal}') return <img key={index} src="/assets/teams/royal.webp" alt="Raimon" className="inline-block w-[40px] h-[40px] mx-0.5 align-middle object-contain" onError={(e) => e.currentTarget.style.display = 'none'} />;
+      if (part.toLowerCase() === '{zeus}') return <img key={index} src="/assets/teams/zeus.webp" alt="Raimon" className="inline-block w-[40px] h-[40px] mx-0.5 align-middle object-contain" onError={(e) => e.currentTarget.style.display = 'none'} />;
+      if (part.toLowerCase() === '{agarrar}') return <img key={index} src="/assets/skills/agarrar.png" alt="Raimon" className="inline-block w-[40px] h-[40px] mx-0.5 align-middle object-contain" onError={(e) => e.currentTarget.style.display = 'none'} />;
+      if (part.toLowerCase() === '{chute}') return <img key={index} src="/assets/skills/chute.png" alt="Raimon" className="inline-block w-[40px] h-[40px] mx-0.5 align-middle object-contain" onError={(e) => e.currentTarget.style.display = 'none'} />;
+      if (part.toLowerCase() === '{defender}') return <img key={index} src="/assets/skills/defender.png" alt="Raimon" className="inline-block w-[40px] h-[40px] mx-0.5 align-middle object-contain" onError={(e) => e.currentTarget.style.display = 'none'} />;
+      if (part.toLowerCase() === '{drible}') return <img key={index} src="/assets/skills/drible.png" alt="Raimon" className="inline-block w-[40px] h-[40px] mx-0.5 align-middle object-contain" onError={(e) => e.currentTarget.style.display = 'none'} />;
+
 
       if (!part.startsWith('{')) {
         // Ao invés de quebrar por espaço, quebramos pelas nossas palavras-chave.
@@ -148,7 +156,7 @@ export default function CardPreview({ data }: { data: any }) {
         
         {/* Custo (Fica centralizado perfeitamente sobre a bola/círculo do topo esquerdo) */}
         <div className="absolute top-[15px] left-[15px] w-[105px] h-[105px] flex items-center justify-center z-20">
-          <span className="font-stormfaze text-[60px] text-black leading-none select-none">
+          <span className="font-stormfaze text-[60px] text-white leading-none select-none [-webkit-text-stroke:3px_black]">
             {data.cost || '0'}
           </span>
         </div>
@@ -188,8 +196,8 @@ export default function CardPreview({ data }: { data: any }) {
         </div>
 
         {/* Nome da Posição (se Jogador) ou Tipo da Carta */}
-          <div className="absolute bottom-[160px] left-0 right-0 flex justify-center z-20">
-            <span className="font-stormfaze text-[38px] tracking-wide uppercase" style={{ color: '#000000' }}>
+          <div className="absolute bottom-[155px] left-0 right-0 flex justify-center z-20">
+            <span className="font-stormfaze text-[38px] tracking-wide uppercase text-white [-webkit-text-stroke:2px_black]">
               {data.cardType === 'jogador' 
                 ? (data.position || 'Goleiro') 
                 : data.cardType === 'tatica' 
@@ -202,7 +210,7 @@ export default function CardPreview({ data }: { data: any }) {
         {/* Valor de Ataque (Centralizado perfeitamente sobre a rede do rodapé esquerdo) */}
         {data.cardType === 'jogador' && (
         <div className="absolute bottom-[2px] left-[15px] w-[95px] h-[95px] flex items-center justify-center z-20">
-          <span className="font-stormfaze text-[55px] text-black leading-none">
+          <span className="font-stormfaze text-[55px] text-white leading-none [-webkit-text-stroke:3px_black]">
             {data.atk || '—'}
           </span>
         </div>
@@ -211,7 +219,7 @@ export default function CardPreview({ data }: { data: any }) {
         {/* Nome do Jogador & Ícone do Time (Centro do rodapé) */}
         <div className="absolute bottom-[15px] left-[150px] right-[150px] h-[140px] flex flex-col items-center justify-center z-20">
           {/* Nome com fonte Balmont (Deslocado 5px para baixo) */}
-          <span className="font-balmont text-[52px] text-black tracking-wide text-center uppercase whitespace-nowrap mb-1 translate-y-[10px]">
+          <span className="font-balmont text-[52px] text-white tracking-wide text-center uppercase whitespace-nowrap mb-1 translate-y-[10px] [-webkit-text-stroke:3px_black]">
             {data.name || 'NOME'}
           </span>
           {/* Ícone do Time miniaturizado (Com sombra projetada de 5px) */}
@@ -225,12 +233,14 @@ export default function CardPreview({ data }: { data: any }) {
               onError={(e) => e.currentTarget.style.display = 'none'} 
             />
           )}
+          </div>
+          <div className="w-[60px] h-[60px]">
           {/* RENDERIZA TIPO DE HABILIDADE SE FOR HISSATSU */}
           {data.cardType === 'hissatsu' && (
             <img 
               src={`/assets/skills/${data.skillType || 'chute'}.png`} 
               alt="Habilidade" 
-              className="w-full h-full object-contain drop-shadow-[0_5px_5px_rgba(0,0,0,0.6)]" 
+              className="w-full h-full object-contain drop-shadow-[0_5px_5px_rgba(0,0,0,0.6)] translate-y-[-7px]" 
             />
           )}
           </div>
@@ -239,7 +249,7 @@ export default function CardPreview({ data }: { data: any }) {
         {/* Valor de Resistência (Centralizado perfeitamente sobre o escudo do rodapé direito) */}
         {data.cardType === 'jogador' && (
         <div className="absolute bottom-[2px] right-[6px] w-[95px] h-[95px] flex items-center justify-center z-20">
-          <span className="font-stormfaze text-[55px] text-black leading-none">
+          <span className="font-stormfaze text-[55px] text-white leading-none [-webkit-text-stroke:3px_black]">
             {data.res || '0'}
           </span>
         </div>
