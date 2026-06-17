@@ -46,8 +46,12 @@ export default function CardPreview({ data }: { data: any }) {
       if (part.toLowerCase() === '{chute}') return <img key={index} src="/assets/skills/chute.png" alt="Raimon" className="inline-block w-[40px] h-[40px] mx-0.5 align-middle object-contain" onError={(e) => e.currentTarget.style.display = 'none'} />;
       if (part.toLowerCase() === '{defender}') return <img key={index} src="/assets/skills/defender.png" alt="Raimon" className="inline-block w-[40px] h-[40px] mx-0.5 align-middle object-contain" onError={(e) => e.currentTarget.style.display = 'none'} />;
       if (part.toLowerCase() === '{drible}') return <img key={index} src="/assets/skills/drible.png" alt="Raimon" className="inline-block w-[40px] h-[40px] mx-0.5 align-middle object-contain" onError={(e) => e.currentTarget.style.display = 'none'} />;
-
-
+      if (part.toLowerCase() === '{fogo}') return <img key={index} src="/assets/elements/fogo.png" alt="Raimon" className="inline-block w-[40px] h-[40px] mx-0.5 align-middle object-contain" onError={(e) => e.currentTarget.style.display = 'none'} />;
+      if (part.toLowerCase() === '{montanha}') return <img key={index} src="/assets/elements/montanha.png" alt="Raimon" className="inline-block w-[40px] h-[40px] mx-0.5 align-middle object-contain" onError={(e) => e.currentTarget.style.display = 'none'} />;
+      if (part.toLowerCase() === '{natureza}') return <img key={index} src="/assets/elements/natureza.png" alt="Raimon" className="inline-block w-[40px] h-[40px] mx-0.5 align-middle object-contain" onError={(e) => e.currentTarget.style.display = 'none'} />;
+      if (part.toLowerCase() === '{nulo}') return <img key={index} src="/assets/elements/nulo.png" alt="Raimon" className="inline-block w-[40px] h-[40px] mx-0.5 align-middle object-contain" onError={(e) => e.currentTarget.style.display = 'none'} />;
+      if (part.toLowerCase() === '{vento}') return <img key={index} src="/assets/elements/vento.png" alt="Raimon" className="inline-block w-[40px] h-[40px] mx-0.5 align-middle object-contain" onError={(e) => e.currentTarget.style.display = 'none'} />;
+      
       if (!part.startsWith('{')) {
         // Ao invés de quebrar por espaço, quebramos pelas nossas palavras-chave.
         const fragments = part.split(KEYWORD_REGEX);
