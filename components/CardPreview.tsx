@@ -195,7 +195,7 @@ export default function CardPreview({ data }: { data: any }) {
 
         {/* Caixa de Efeito (Ajustada com a fonte Balmont e opacidade 80%) */}
         <div className="absolute bottom-[245px] left-[50px] right-[50px] bg-white/70 backdrop-blur-[2px] rounded-[25px] px-[35px] py-[25px] z-20 shadow-md min-h-[140px] flex items-center">
-          <div className="font-balmont text-black text-[18px] leading-snug whitespace-pre-wrap w-full">
+          <div className="font-balmont text-black text-[22px] leading-snug whitespace-pre-wrap w-full">
             {renderEffectText(data.effect)}
           </div>
         </div>
