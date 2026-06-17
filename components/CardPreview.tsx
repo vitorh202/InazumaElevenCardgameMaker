@@ -37,10 +37,10 @@ export default function CardPreview({ data }: { data: any }) {
     return parts.map((part, index) => {
       if (part.toLowerCase() === '{r}') return <img key={index} src="/assets/icons/shield.png" alt="Res" className="inline-block w-[40px] h-[40px] mx-0.5 align-middle object-contain" onError={(e) => e.currentTarget.style.display = 'none'} />;
       if (part.toLowerCase() === '{a}') return <img key={index} src="/assets/icons/atk.png" alt="Atk" className="inline-block w-[40px] h-[40px] mx-0.5 align-middle object-contain" onError={(e) => e.currentTarget.style.display = 'none'} />;
-      if (part.toLowerCase() === '{raimon}') return <img key={index} src="/assets/teams/raimon.webp" alt="Raimon" className="inline-block w-[40px] h-[40px] mx-0.5 align-middle object-contain" onError={(e) => e.currentTarget.style.display = 'none'} />;
-      if (part.toLowerCase() === '{genesis}') return <img key={index} src="/assets/teams/genesis.webp" alt="Raimon" className="inline-block w-[40px] h-[40px] mx-0.5 align-middle object-contain" onError={(e) => e.currentTarget.style.display = 'none'} />;
-      if (part.toLowerCase() === '{royal}') return <img key={index} src="/assets/teams/royal.webp" alt="Raimon" className="inline-block w-[40px] h-[40px] mx-0.5 align-middle object-contain" onError={(e) => e.currentTarget.style.display = 'none'} />;
-      if (part.toLowerCase() === '{zeus}') return <img key={index} src="/assets/teams/zeus.webp" alt="Raimon" className="inline-block w-[40px] h-[40px] mx-0.5 align-middle object-contain" onError={(e) => e.currentTarget.style.display = 'none'} />;
+      if (part.toLowerCase() === '{raimon}') return <img key={index} src="/assets/teams/raimon.png" alt="Raimon" className="inline-block w-[40px] h-[40px] mx-0.5 align-middle object-contain" onError={(e) => e.currentTarget.style.display = 'none'} />;
+      if (part.toLowerCase() === '{genesis}') return <img key={index} src="/assets/teams/genesis.png" alt="Raimon" className="inline-block w-[40px] h-[40px] mx-0.5 align-middle object-contain" onError={(e) => e.currentTarget.style.display = 'none'} />;
+      if (part.toLowerCase() === '{royal}') return <img key={index} src="/assets/teams/royal.png" alt="Raimon" className="inline-block w-[40px] h-[40px] mx-0.5 align-middle object-contain" onError={(e) => e.currentTarget.style.display = 'none'} />;
+      if (part.toLowerCase() === '{zeus}') return <img key={index} src="/assets/teams/zeus.png" alt="Raimon" className="inline-block w-[40px] h-[40px] mx-0.5 align-middle object-contain" onError={(e) => e.currentTarget.style.display = 'none'} />;
       if (part.toLowerCase() === '{agarrar}') return <img key={index} src="/assets/skills/agarrar.png" alt="Raimon" className="inline-block w-[40px] h-[40px] mx-0.5 align-middle object-contain" onError={(e) => e.currentTarget.style.display = 'none'} />;
       if (part.toLowerCase() === '{chute}') return <img key={index} src="/assets/skills/chute.png" alt="Raimon" className="inline-block w-[40px] h-[40px] mx-0.5 align-middle object-contain" onError={(e) => e.currentTarget.style.display = 'none'} />;
       if (part.toLowerCase() === '{defender}') return <img key={index} src="/assets/skills/defender.png" alt="Raimon" className="inline-block w-[40px] h-[40px] mx-0.5 align-middle object-contain" onError={(e) => e.currentTarget.style.display = 'none'} />;
@@ -227,7 +227,7 @@ export default function CardPreview({ data }: { data: any }) {
           <div className="w-[75px] h-[75px]">
           {data.cardType === 'jogador' && (
             <img 
-              src={`/assets/teams/${data.team || 'raimon'}.webp`} 
+              src={`/assets/teams/${data.team || 'raimon'}.png`} 
               alt="Time" 
               className="w-full h-full object-contain drop-shadow-[0_5px_5px_rgba(0,0,0,0.8)] translate-y-[-7px]" 
               onError={(e) => e.currentTarget.style.display = 'none'} 
