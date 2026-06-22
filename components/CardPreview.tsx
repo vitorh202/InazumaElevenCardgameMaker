@@ -19,7 +19,7 @@ export default function CardPreview({ data }: { data: any }) {
     'Assinatura', 'Atordoado', 'Afinidade', 'Condição', 'Perfurante', 'Despertar',
     'Investida', 'Hissatsu', 'Técnica', 'Suporte', 'Estagio', 'Jogador', 'Exausto',
     'Bloqueio', 'Defesa', 'Cadeia', 'Chutes', 'Roubar', 'Mover', 'Posse', 'Jogadores',
-    'Descarte', 'Nível'
+    'Descarte', 'Nível', 'Rápido'
   ];
   
   // Ordenamos da palavra mais longa para a mais curta. 
